@@ -119,6 +119,7 @@ class docker::service (
     'RedHat': {
       if ($::operatingsystem == 'Fedora') or (versioncmp($::operatingsystemrelease, '7.0') >= 0) {
         $template = 'docker.systemd.erb'
+        $overrides_content = 'docker/etc/systemd/system/docker.service.d/service-overrides-rhel7.conf.erb'
 
         file { '/etc/sysconfig/docker-storage-setup':
           ensure  => present,
@@ -130,6 +131,7 @@ class docker::service (
 
       } else {
         $template = 'docker.erb'
+        $overrides_content = 'docker/etc/systemd/system/docker.service.d/service-overrides-rhel.conf.erb'
       }
       $hasstatus     = undef
       $hasrestart    = undef
@@ -141,7 +143,7 @@ class docker::service (
 
         file { '/etc/systemd/system/docker.service.d/service-overrides.conf':
           ensure  => present,
-          content => template('docker/etc/systemd/system/docker.service.d/service-overrides-rhel.conf.erb'),
+          content => template($overrides_content),
           notify  => Exec['docker-systemd-reload'];
         }
       }

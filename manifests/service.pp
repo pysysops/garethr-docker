@@ -117,7 +117,7 @@ class docker::service (
 
     }
     'RedHat': {
-      if ($::operatingsystem == 'Fedora') or (versioncmp($::operatingsystemrelease, '7.0') >= 0) {
+      if ($::operatingsystem == 'Fedora') or (versioncmp($::operatingsystemrelease, '7.1') >= 0) {
         $template = 'docker.systemd.erb'
         $overrides_content = 'docker/etc/systemd/system/docker.service.d/service-overrides-rhel7.conf.erb'
 
